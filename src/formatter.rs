@@ -14,15 +14,6 @@ pub enum FmtMode {
     Pressure,
 }
 
-pub enum WeatherType {
-    Thunderstorm,
-    Drizzle,
-    Rain,
-    Snow,
-    Clear,
-    Clouds,
-}
-
 impl FmtMode {
     fn location(&self, data: &Value) -> String {
         format!(
@@ -68,7 +59,7 @@ impl FmtMode {
     pub fn print(&self, data: &Value, units: Units) {
         match self {
             Self::All => {
-                let art = Ascii::Rain.art1();
+                let art = Ascii::from_id(data).art1();
 
                 for i in art.iter().enumerate() {
                     println!(
