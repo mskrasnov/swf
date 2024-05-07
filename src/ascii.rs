@@ -41,27 +41,27 @@ impl Ascii {
     pub fn art1(&self) -> [String; 5] {
         match self {
             Self::Sunny => [
-                format!("   {}   {}   ", "\\".yellow(), "/".yellow()),
+                format!("    {}   {}   ", "\\".yellow(), "/".yellow()),
                 format!(
-                    "    {}{}{}    ",
+                    "     {}{}{}    ",
                     ".".yellow().bold(),
                     "-".yellow().bold(),
                     ".".yellow().bold(),
                 ),
                 format!(
-                    " {} {}   {} {} ",
+                    "  {} {}   {} {} ",
                     "-".yellow(),
                     "(".yellow().bold(),
                     ")".yellow().bold(),
                     "-".yellow(),
                 ),
                 format!(
-                    "    {}{}{}    ",
+                    "     {}{}{}    ",
                     "`".yellow().bold(),
                     "-".yellow().bold(),
                     "'".yellow().bold(),
                 ),
-                format!("   {}   {}   ", "/".yellow(), "\\".yellow()),
+                format!("    {}   {}   ", "/".yellow(), "\\".yellow()),
             ],
             Self::Rain => [
                 format!(
