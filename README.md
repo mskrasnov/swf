@@ -1,4 +1,4 @@
-# SWF - Simple Weather Forecast
+# ⛅ SWF - Simple Weather Forecast
 
 ![](assets/swf.gif)
 
