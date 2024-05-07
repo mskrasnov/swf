@@ -1,5 +1,6 @@
 //! Formats and outputs weather information to the terminal
 
+use chrono::prelude::*;
 use colored::Colorize;
 use serde_json::Value;
 
@@ -21,6 +22,15 @@ impl FmtMode {
             data["sys"]["country"].to_string().replace('"', ""),
             data["name"].to_string().replace('"', "")
         )
+    }
+
+    fn datetime(&self, data: &Value) -> String {
+        let dt = data["dt"].to_string().parse::<i64>().unwrap();
+        let tz = data["timezone"].to_string().parse::<i32>().unwrap();
+        let date = DateTime::from_timestamp(dt, 0).unwrap();
+        let date = date.with_timezone(&FixedOffset::east_opt(tz).unwrap());
+
+        format!("{}{}{}", date.hour(), ":".bold().blink(), date.minute())
     }
 
     fn weather_type(&self, data: &Value) -> String {
@@ -67,10 +77,11 @@ impl FmtMode {
                         i.1,
                         match i.0 {
                             0 => self.location(data).bold().to_string(),
-                            1 => self.weather_type(data),
-                            2 => self.temperature(data, units.clone()),
-                            3 => self.feels_like(data, units.clone()),
-                            _ => format!("2202 2062 5233 5406"),
+                            1 => self.datetime(data),
+                            2 => self.weather_type(data),
+                            3 => self.temperature(data, units.clone()),
+                            4 => self.feels_like(data, units.clone()),
+                            _ => "".to_string(),
                         }
                     );
                 }
