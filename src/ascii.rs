@@ -1,5 +1,5 @@
+use chrono::prelude::*;
 use colored::Color;
-// use colored::Colorize;
 use colored::ColoredString;
 use colored::Colorize;
 use serde_json::Value;
@@ -31,7 +31,14 @@ impl Ascii {
             200..=232 => Self::Thunder,
             300..=321 | 500..=531 => Self::Rain,
             600..=622 => Self::Snow,
-            800 => Self::Sunny,
+            800 => {
+                let time = data["dt"].to_string().parse::<i64>().unwrap();
+                let date = DateTime::from_timestamp(time, 0).unwrap();
+                match date.hour() {
+                    7..=18 => Self::Sunny,
+                    _ => Self::Night,
+                }
+            }
             801..=804 => Self::Cloudy,
             _ => Self::Other,
         }
@@ -90,40 +97,51 @@ impl Ascii {
                 format!("     {}", ", , , ,".blue()),
                 format!("    {} ", ", , , ,".bright_blue()),
             ],
-            Self::Snow => [
-                format!(
-                    " {}{}{}{}{}.-.   ",
-                    "_".yellow().bold(),
-                    "`".yellow(),
-                    "/".yellow().bold(),
-                    "\"".yellow(),
-                    "\"".bright_yellow(),
-                ),
-                format!(
-                    "  {}{}{}(   ){} ",
-                    ",".yellow(),
-                    "\\".yellow().bold(),
-                    "_".bright_yellow(),
-                    ".".bright_white()
-                ),
-                format!(
-                    "   {}{}{}{}{}{}",
-                    "/".yellow(),
-                    "(".bright_black(),
-                    "___".bright_black(),
-                    "(".bright_black(),
-                    "__".magenta(),
-                    ")".white(),
-                ),
-                format!("     {}", "* * * *".bright_black()),
-                format!("    {} ", "* * * *".white()),
-            ],
             Self::Cloudy => [
                 format!("            "),
                 format!("     .--.   "),
                 format!("  .-(    ). "),
                 format!(" (___.__)__)"),
                 format!("            "),
+            ],
+            Self::Snow => [
+                format!("     .--.   "),
+                format!("  .-(    ). "),
+                format!(
+                    " ({}{}{}){})",
+                    "___".bright_black(),
+                    ".".bright_white(),
+                    "__".bright_black(),
+                    "__".bright_black()
+                ),
+                format!(
+                    "   {b} {w} {b} {w} {b}",
+                    b = "*".bright_black(),
+                    w = "*".bright_white()
+                ),
+                format!(
+                    "  {w} * {b} * {w} ",
+                    b = "*".bright_black(),
+                    w = "*".bright_white()
+                ),
+            ],
+            Self::Night => [
+                format!("  x        {}", "*".red()),
+                format!(
+                    "  {}{}    {}   ",
+                    "/".blue(),
+                    "|".bright_blue(),
+                    "*".magenta()
+                ),
+                format!(
+                    " {} {}  {}  {}  ",
+                    "|".bright_blue(),
+                    "|".bright_white(),
+                    "*".blue(),
+                    "*".yellow().bold()
+                ),
+                format!("  {}{}   *    ", "\\".bright_white(), "|".bright_black()),
+                format!("     *    x "),
             ],
             _ => [
                 format!(""),
