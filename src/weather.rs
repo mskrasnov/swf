@@ -1,6 +1,7 @@
 //! Getting information about the weather in a given location
 
 use anyhow::Result;
+use chrono::prelude::*;
 use reqwest;
 use serde_json::Value;
 
@@ -43,4 +44,15 @@ impl<'a> Weather<'a> {
             .await?;
         Ok(query)
     }
+}
+
+pub fn get_location_time(data: &Value) -> Result<DateTime<FixedOffset>> {
+    let dt = data["dt"].to_string().parse::<i64>()?;
+    let tz = data["timezone"].to_string().parse::<i32>()?;
+
+    let date = DateTime::from_timestamp(dt, 0)
+        .unwrap_or_default()
+        .with_timezone(&FixedOffset::east_opt(tz).unwrap());
+
+    Ok(date)
 }

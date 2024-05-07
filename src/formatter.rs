@@ -6,6 +6,7 @@ use serde_json::Value;
 
 use crate::ascii::Ascii;
 use crate::conf::Units;
+use crate::weather::get_location_time;
 
 pub enum FmtMode {
     All,
@@ -25,10 +26,7 @@ impl FmtMode {
     }
 
     fn datetime(&self, data: &Value) -> String {
-        let dt = data["dt"].to_string().parse::<i64>().unwrap();
-        let tz = data["timezone"].to_string().parse::<i32>().unwrap();
-        let date = DateTime::from_timestamp(dt, 0).unwrap();
-        let date = date.with_timezone(&FixedOffset::east_opt(tz).unwrap());
+        let date = get_location_time(data).unwrap();
 
         format!("{}{}{}", date.hour(), ":".bold().blink(), date.minute())
     }

@@ -1,8 +1,8 @@
 use chrono::prelude::*;
-use colored::Color;
-use colored::ColoredString;
 use colored::Colorize;
 use serde_json::Value;
+
+use crate::weather::get_location_time;
 
 pub enum Ascii {
     Sunny,
@@ -10,14 +10,8 @@ pub enum Ascii {
     Rain,
     Thunder,
     Cloudy,
-    // PartlyCloudy,
     Snow,
     Other,
-}
-
-pub struct Art {
-    pub domination_color: Color,
-    pub art: [ColoredString; 3],
 }
 
 impl Ascii {
@@ -32,8 +26,8 @@ impl Ascii {
             300..=321 | 500..=531 => Self::Rain,
             600..=622 => Self::Snow,
             800 => {
-                let time = data["dt"].to_string().parse::<i64>().unwrap();
-                let date = DateTime::from_timestamp(time, 0).unwrap();
+                let date = get_location_time(data).unwrap();
+
                 match date.hour() {
                     7..=18 => Self::Sunny,
                     _ => Self::Night,
