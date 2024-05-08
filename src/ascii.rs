@@ -119,6 +119,31 @@ impl Ascii {
                     w = "*".bright_white()
                 ),
             ],
+            Self::Thunder => [
+                format!("     {}   ", ".--.".bright_black()),
+                format!("  {}    {} ", ".-(".bright_black(), ").".bright_black()),
+                format!(
+                    " {b}{}{}{}{b}{}{n}",
+                    "___".bright_black(),
+                    ".".bright_white(),
+                    "__".bright_black(),
+                    "__".bright_black(),
+                    b = "(".blue(),
+                    n = ")".magenta(),
+                ),
+                format!(
+                    "   {b} {w} {r} {w} {b}",
+                    b = "|".bright_black(),
+                    w = "|".bright_magenta(),
+                    r = ",".blue(),
+                ),
+                format!(
+                    "  {w} {r} {b} {r} {w} ",
+                    b = "|".bright_black(),
+                    w = "|".bright_magenta(),
+                    r = ",".blue(),
+                ),
+            ],
             Self::Night => [
                 format!("  x        {}", "*".red()),
                 format!(
