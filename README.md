@@ -2,75 +2,62 @@
 
 ![](assets/swf.gif)
 
-SWF - консольная программа для получения данных о погоде в заданном местоположении (локации). Использует API OpenWeatherMap. Поддерживает конфигурационные файлы с описанием основных параметров программы.
+SWF is a console program for get weather data for a given location. Uses OpenWeatherMap API. Supports configuration files with description of the main program parameters.
 
-Отображает ASCII-арт текущей погоды, время в выбранном местоположении, а также температуру. В будущем будут добавляться новые функции.
+Displays ASCII art of the current weather, the time at the selected location (the time for weather data was measured, not the current time), and the temperature. More features will be added in the future (maybe).
 
 ![](assets/swf.png)
 
-## Возможности
-
-- [X] Сведения о погоде в данный момент времени
-- [ ] Сведения о погоде на несколько часов вперёд
-- [ ] Красивые ASCII-арты, отображающие различные типы погоды (солнечно, облачно, пасмурно, дождь, гроза, ветрено и т.д.)
-- [ ] Кеширование
-- [ ] Локализация на другие языки
-
 ## Использование
 
-- `--display=` - указывает, какие данные требуется отобразить. Допустимые значения:
-  - `all` - вывести полную информацию, включая ASCII-лого, информацию о температуре, давлении и времени вызова SWF;
-  - `weather-type` - краткое описание погоды (солнечно, пасмурно, дождь и т.д.);
-  - `feels-like` - ощущаемая температура
-  - `pressure` - давление
-- `--location` - местоположение, например: `--location=Vladimir,Vladimir\ Oblast,RU`
-- `--units=` - единицы измерения, в которых нужно вывести информацию. Допустимые значения:
+- `--location` - location where you want to display weather: `--location=Vladimir,Vladimir\ Oblast,RU`
+- `--units=` - units in which you want to output the information. Valid values:
   - `metric`;
   - `imperial`;
-- `--api-key=` - ключ API OWM;
-- `--config=` - путь до альтернативного конфига (по умолчанию конфиг ищется в `~/.config/swf/toml`);
+- `--api-key=` - OWM API key;
+- `--config=` - path to the alternate config (default: `~/.config/swf/toml`);
 
-Ключи, переданные программе, имеют б*о*льший приоритет, чем данные из конфига.
+Keys passed to the program have higher priority than data from the config.
 
-## Конфигурация
+## Configuration
 
-Конфигурация описывается в файле формата TOML. В этом файле описываются следующие параметры:
+The configuration is described in a TOML format file. It describes the following parameters:
 
-- Местоположение;
-- Единицы измерения, в которых будет выведена информация;
-- Ключ API;
+- Location;
+- Units;
+- API Key;
 
-Конфиг содержится в файле `~/.config/swf.toml`.
+The configuration is contained in the `~/.config/swf.toml`.
 
-Каждый из параметров является *опциональным*, т.е. может отсутствовать в конфиге. Если какого-то параметра в конфиге нет, то его нужно указать, передав значение соответствующему ключу.
+Each of the parameters is *optional*, i.e. may not be in the config. If a parameter is not in the config, it must be specified by passing the value to the corresponding key.
 
-Пример конфига:
+Example:
 
 ```toml
 location = "Vladimir,RU"
 units = "metric"
 ```
 
-Здесь не указан параметр `api_key`, поэтому его нужно указать в ключе `--api-key=`, переданному `swf`:
+The `api_key` parameter is not specified here, so it must be specified in the `--api-key` passed to `swf`:
 
 ```bash
 swf --api-key=8sdfg6sd79f69sd87f6gsd9679
 ```
 
-## Локальная сборка
+## Local build
 
-### Требования
+### Dependencies
 
-- `rustc` и `cargo` для сборки;
+- `rustc` and `cargo` for build;
 
-### Сборка
+### Build
 
 ```bash
 cargo build --release
 cp -v ./target/release/swf ~/.local/bin
 ```
 
-## Поддержка
+## Support me (Russia)
 
 Если вы хотите поддержать этот проект, вы можете либо принять участие в его разработке, либо отправить донат мне на карту сбербанка:
 
@@ -78,6 +65,6 @@ cp -v ./target/release/swf ~/.local/bin
 
 Участие в разработке SWF или донаты покажут, что эта утилита ещё кому-то нужна, а значит будут мотивировать меня продолжать разработку и добавлять новые функции и исправлять ошибки.
 
-## Лицензия
+## License
 
-SWF распространяется под лицензией MIT.
+SWF distributed under MIT license.
