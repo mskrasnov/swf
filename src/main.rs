@@ -6,10 +6,10 @@ pub mod weather;
 
 // use anyhow::Result;
 use clap::Parser;
-use std::process::exit;
+use std::{process::exit, str::FromStr};
 
 use cli::Cli;
-use conf::Conf;
+use conf::{Conf, Units};
 use formatter::FmtMode;
 use weather::Weather;
 
@@ -63,7 +63,14 @@ async fn main() -> anyhow::Result<()> {
         }
     };
 
-    let weather = Weather::new(&location, &key);
+    let units = get_data(
+        Some(cli.units),
+        Some(conf.units.unwrap_or_default().to_string()),
+    )
+    .unwrap();
+
+    let weather =
+        Weather::new(&location, &key).set_units_type(Units::from_str(&units).unwrap_or_default());
     let data = weather.get().await?;
 
     fmt_mode.print(&data, weather.units.clone());

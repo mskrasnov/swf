@@ -3,6 +3,7 @@
 use anyhow::Result;
 use serde::Deserialize;
 use std::path::Path;
+use std::str::FromStr;
 use tokio::fs::read_to_string;
 use toml;
 
@@ -42,5 +43,17 @@ impl ToString for Units {
             Self::Imperial => "imperial",
         }
         .to_string()
+    }
+}
+
+impl FromStr for Units {
+    type Err = String;
+
+    fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
+        match s {
+            "metric" => Ok(Self::Metric),
+            "imperial" => Ok(Self::Imperial),
+            _ => Err(format!("Unknown units type: {s}")),
+        }
     }
 }
