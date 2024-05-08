@@ -26,6 +26,8 @@ impl Ascii {
             300..=321 | 500..=531 => Self::Rain,
             600..=622 => Self::Snow,
             800 => {
+                // В зависимости от времени суток выбираем нужный ASCII-арт:
+                // дневной или ночной.
                 let date = get_location_time(data).unwrap();
 
                 match date.hour() {
@@ -163,11 +165,11 @@ impl Ascii {
                 format!("     *    x "),
             ],
             _ => [
-                format!(""),
-                format!(""),
-                format!(""),
-                format!(""),
-                format!(""),
+                format!("????????????"),
+                format!("????????????"),
+                format!("????????????"),
+                format!("????????????"),
+                format!("????????????"),
             ],
         }
     }
