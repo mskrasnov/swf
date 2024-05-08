@@ -8,7 +8,7 @@ Displays ASCII art of the current weather, the time at the selected location (th
 
 ![](assets/swf.png)
 
-## Использование
+## Usage
 
 - `--location` - location where you want to display weather: `--location=Vladimir,Vladimir\ Oblast,RU`
 - `--units=` - units in which you want to output the information. Valid values:
