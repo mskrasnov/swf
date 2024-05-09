@@ -96,6 +96,9 @@ impl FmtMode {
                     );
                 }
             }
+            Self::WeatherType => println!("{}", self.weather_type(data)),
+            Self::Temperature => println!("{}", self.temperature(data, units.clone())),
+            Self::FeelsLike => println!("{}", self.feels_like(data, units.clone())),
             _ => {}
         }
     }
