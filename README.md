@@ -1,5 +1,7 @@
 # ⛅ SWF - Simple Weather Forecast
 
+[![](https://img.shields.io/badge/Telegram-Свалка-blue)](https://t.me/svalka07) [![](https://img.shields.io/bagde/README%20на%20русском-8A2BE2)](README_RU.md)
+
 ![](assets/swf.gif)
 
 SWF is a console program for get weather data for a given location. Uses OpenWeatherMap API. Supports configuration files with description of the main program parameters.
