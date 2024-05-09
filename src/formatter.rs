@@ -16,26 +16,34 @@ pub enum FmtMode {
     Pressure,
 }
 
+fn val_to_str(data: &Value) -> String {
+    data.to_string().replace('"', "")
+}
+
 impl FmtMode {
     fn location(&self, data: &Value) -> String {
         format!(
             "{}/{}",
-            data["sys"]["country"].to_string().replace('"', ""),
-            data["name"].to_string().replace('"', "")
+            val_to_str(&data["sys"]["country"]),
+            val_to_str(&data["name"]),
         )
     }
 
     fn datetime(&self, data: &Value) -> String {
         let date = get_location_time(data).unwrap();
+        let hour = date.hour();
+        let min = date.minute();
 
-        format!("{}{}{}", date.hour(), ":".bold().blink(), date.minute())
+        format!(
+            "{}{}{}",
+            hour,
+            ":".bold().blink(),
+            if min < 10 { format!("0{min}") } else { min.to_string() }
+        )
     }
 
     fn weather_type(&self, data: &Value) -> String {
-        format!(
-            "{}",
-            data["weather"][0]["main"].to_string().replace('"', "")
-        )
+        format!("{}", val_to_str(&data["weather"][0]["description"]))
     }
 
     fn temperature(&self, data: &Value, units: Units) -> String {
