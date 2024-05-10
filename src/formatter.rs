@@ -29,6 +29,14 @@ impl FmtMode {
         )
     }
 
+    fn fmt_hour_minute(&self, num: u32) -> String {
+        if num < 10 {
+            format!("0{num}")
+        } else {
+            num.to_string()
+        }
+    }
+
     fn datetime(&self, data: &Value) -> String {
         let date = get_location_time(data).unwrap();
         let hour = date.hour();
@@ -36,17 +44,9 @@ impl FmtMode {
 
         format!(
             "{}{}{}",
-            if hour < 10 {
-                format!("0{hour}")
-            } else {
-                hour.to_string()
-            },
+            self.fmt_hour_minute(hour),
             ":".bold().blink(),
-            if min < 10 {
-                format!("0{min}")
-            } else {
-                min.to_string()
-            }
+            self.fmt_hour_minute(min),
         )
     }
 
