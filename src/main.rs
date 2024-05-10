@@ -6,7 +6,7 @@ pub mod weather;
 
 // use anyhow::Result;
 use clap::Parser;
-use std::{process::exit, str::FromStr};
+use std::{path::Path, process::exit, str::FromStr};
 
 use cli::Cli;
 use conf::{Conf, Units};
@@ -37,7 +37,7 @@ async fn main() -> anyhow::Result<()> {
             exit(1)
         }
     };
-    let conf = Conf::parse("./swf.toml").await?;
+    let conf = Conf::parse(Path::new(&conf::home()?).join(".config").join("swf.toml")).await?;
 
     let location = match get_data(cli.location, conf.location) {
         Some(loc) => loc,

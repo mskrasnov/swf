@@ -2,10 +2,15 @@
 
 use anyhow::Result;
 use serde::Deserialize;
+use std::env::var;
 use std::path::Path;
 use std::str::FromStr;
 use tokio::fs::read_to_string;
 use toml;
+
+pub fn home() -> Result<String> {
+    Ok(var("HOME")?)
+}
 
 #[derive(Debug, Deserialize)]
 pub struct Conf {
