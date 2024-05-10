@@ -1,6 +1,6 @@
 [package]
 name = "swf"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
 description = "Console program to get current information about weather"
 authors = ["Pelmen Zharenny"]
@@ -15,8 +15,6 @@ strip = true
 debug = false
 panic = "abort"
 opt-level = "s"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 anyhow = "1.0.82"
