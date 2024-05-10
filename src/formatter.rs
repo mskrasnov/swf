@@ -36,7 +36,11 @@ impl FmtMode {
 
         format!(
             "{}{}{}",
-            hour,
+            if hour < 10 {
+                format!("0{hour}")
+            } else {
+                hour.to_string()
+            },
             ":".bold().blink(),
             if min < 10 {
                 format!("0{min}")
