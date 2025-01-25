@@ -17,6 +17,9 @@ pub enum FmtMode {
 }
 
 fn val_to_str(data: &Value) -> String {
+    /* да, можно было воспользоваться data.as_str(), но тогда
+     * пришлось бы обрабатывать случай, когда нам попался None
+     */
     data.to_string().replace('"', "")
 }
 

@@ -6,10 +6,11 @@ pub mod weather;
 
 // use anyhow::Result;
 use clap::Parser;
-use std::{path::Path, process::exit, str::FromStr};
+use colored::Colorize;
+use std::{process::exit, str::FromStr};
 
 use cli::Cli;
-use conf::{Conf, Units};
+use conf::{get_default_conf_path, Conf, Units};
 use formatter::FmtMode;
 use weather::Weather;
 
@@ -37,7 +38,7 @@ async fn main() -> anyhow::Result<()> {
             exit(1)
         }
     };
-    let conf = Conf::parse(Path::new(&conf::home()?).join(".config").join("swf.toml")).await?;
+    let conf = Conf::parse(get_default_conf_path()?).await?;
 
     let location = match get_data(cli.location, conf.location) {
         Some(loc) => loc,
@@ -56,8 +57,9 @@ async fn main() -> anyhow::Result<()> {
         None => {
             eprintln!(
                 "You must explicitly specify the API key in \
-                the config (~/.config/swf.toml) or in the \
-                --api-key=... key."
+                the config ({}) or in the \
+                --api-key=... key.",
+                get_default_conf_path()?.display(),
             );
             exit(1)
         }
@@ -72,6 +74,11 @@ async fn main() -> anyhow::Result<()> {
     let weather =
         Weather::new(&location, &key).set_units_type(Units::from_str(&units).unwrap_or_default());
     let data = weather.get().await?;
+
+    if data.get("cod") == Some(&serde_json::Value::String("404".to_string())) {
+        eprintln!("{}: {}", "Error".red().bold(), data["message"].as_str().unwrap_or("Unknown error"));
+        exit(1);
+    }
 
     fmt_mode.print(&data, weather.units.clone());
 
