@@ -2,14 +2,26 @@
 
 use anyhow::Result;
 use serde::Deserialize;
-use std::env::var;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::str::FromStr;
 use tokio::fs::read_to_string;
 use toml;
 
-pub fn home() -> Result<String> {
-    Ok(var("HOME")?)
+pub fn home() -> Result<PathBuf> {
+    match home::home_dir() {
+        Some(home) => Ok(home),
+        None => Err(anyhow::anyhow!("Failed to get home directory!"))
+    }
+}
+
+pub fn get_default_conf_path() -> Result<PathBuf> {
+    if cfg!(target_family="unix") {
+        Ok(home()?.join(".config").join("swf.toml"))
+    } else if cfg!(target_family="windows") {
+        Ok(home()?.join("AppData").join("Roaming").join("swf.toml"))
+    } else {
+        Err(anyhow::anyhow!("Your OS doesn't supported yet"))
+    }
 }
 
 #[derive(Debug, Deserialize)]
