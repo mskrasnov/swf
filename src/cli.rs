@@ -2,7 +2,7 @@ use clap::Parser;
 
 static LONG_ABOUT: &str = "SWF is free software. You can thank the author for his work
 by sending him a donation to the card: 2202 2062 5233 5406
-(Россия, Сбербанк, Михаил Сергеевич).";
+(Russia, Sber, Михаил Сергеевич).";
 
 #[derive(Debug, Parser)]
 #[command(version, about = None)]
